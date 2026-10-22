@@ -46,7 +46,7 @@ h3 {{font-family: Georgia, serif; font-weight:600;}}
 <div class="hero">
   <p class="eyebrow">Biblioteca de la Universidad de Sevilla</p>
   <h1>Retorno de la inversión en bibliotecas universitarias</h1>
-  <p class="sub">ROI y ahorro por persona usuaria · 2023 y 2024 · UAH, UGR, BUS, UB, UV y UZ</p>
+  <p class="sub">ROI y ahorro por persona usuaria · 2023 y 2024 · Resultados por biblioteca</p>
 </div>
 """,
     unsafe_allow_html=True,
@@ -105,9 +105,9 @@ BIBS = sorted(ind["biblioteca"].unique())
 
 # ---------- filtros (barra lateral) ----------
 with st.sidebar:
-    st.header("Filtros")
-    year = st.radio("Año", ["Todos", "2023", "2024"], horizontal=True)
-    bibs = st.multiselect("Biblioteca", BIBS, placeholder="Todas")
+    st.header("Biblioteca")
+    bib = st.radio("Ver los resultados de", BIBS, index=BIBS.index("BUS"), label_visibility="collapsed")
+    st.caption("Los resultados se muestran biblioteca a biblioteca.")
     st.divider()
     servicios = st.multiselect("Servicio (pestaña Servicios per cápita)", list(meta["servicio"]), placeholder="Todos")
     st.divider()
@@ -130,7 +130,7 @@ if exacto:
 tab_roi, tab_svc = st.tabs(["ROI", "Servicios per cápita"])
 
 # =====================================================================
-# Página 1: ROI
+# Página 1: ROI de la biblioteca seleccionada
 # =====================================================================
 with tab_roi:
     st.markdown(
@@ -144,76 +144,62 @@ valores más altos reflejan un impacto aún mayor en la comunidad universitaria.
 reporta de media un beneficio de <b>2,31 euros</b>.</div>""",
         unsafe_allow_html=True,
     )
+    st.markdown(f"### Biblioteca {bib}")
 
-    f = ind.copy()
-    if year != "Todos":
-        f = f[f["anio"] == year]
-    if bibs:
-        f = f[f["biblioteca"].isin(bibs)]
-    roi = f[f["indicador"] == "ROI"]
+    f = ind[ind["biblioteca"] == bib]
+    roi = f[f["indicador"] == "ROI"].sort_values("anio")
 
     left, right = st.columns([1.55, 1], gap="large")
 
     with left:
-        st.subheader("ROI medio por biblioteca")
-        if roi.empty:
-            st.info("Sin datos para el filtro elegido.")
-        else:
-            orden = roi.groupby("biblioteca")["valor"].sum().sort_values(ascending=False).index.tolist()
-            fig = go.Figure()
-            for y in sorted(roi["anio"].unique()):
-                d = roi[roi["anio"] == y].set_index("biblioteca").reindex(orden)
-                fig.add_bar(
-                    x=orden, y=d["valor"], name=y, marker_color=YEAR_COLOR[y],
-                    text=[es(v, 0 if float(v).is_integer() else 2) for v in d["valor"].fillna(0)],
-                    textposition="outside", hovertemplate="%{x} · " + y + ": %{y:,.2f}<extra></extra>",
-                )
-            media = roi["valor"].mean()
-            fig.add_hline(y=media, line_dash="dash", line_color=RED,
-                          annotation_text=f"Media {es(media)}", annotation_position="top right",
-                          annotation_font_color=RED)
-            fig.update_layout(barmode="group")
-            fig.update_yaxes(rangemode="tozero")
-            st.plotly_chart(style(fig, 330), width='stretch')
+        st.subheader("ROI por año")
+        fig = go.Figure()
+        for y in roi["anio"]:
+            v = float(roi.loc[roi["anio"] == y, "valor"].iloc[0])
+            fig.add_bar(x=[y], y=[v], name=y, marker_color=YEAR_COLOR[y], text=[es(v, 0 if v.is_integer() else 2)],
+                        textposition="outside", hovertemplate=y + ": %{y:,.2f}<extra></extra>")
+        fig.add_hline(y=1, line_dash="dash", line_color=GRAY, annotation_text="ROI = 1 (el beneficio iguala al coste)",
+                      annotation_position="top left", annotation_font_color=GRAY)
+        fig.update_layout(showlegend=False)
+        fig.update_yaxes(rangemode="tozero")
+        fig.update_xaxes(type="category")
+        st.plotly_chart(style(fig, 330), width='stretch')
 
         st.subheader("Costes y valor de los servicios")
-        if f.empty:
-            st.info("Sin datos para el filtro elegido.")
-        else:
-            fig = go.Figure()
-            for i in INDICADORES:
-                d = f[f["indicador"] == i].sort_values(["anio", "biblioteca"])
-                fig.add_bar(x=[d["anio"], d["biblioteca"]], y=d["valor"], name=i, marker_color=IND_COLOR[i],
-                            hovertemplate="%{x}<br>" + i + ": %{y:,.0f}<extra></extra>")
-            fig.update_layout(barmode="stack")
-            top = f.groupby(["anio", "biblioteca"])["valor"].sum().max()
-            step = 25e6 if top > 5e7 else 10e6
-            vals = [i * step for i in range(int(top // step) + 2)]
-            fig.update_yaxes(tickvals=vals, ticktext=[auto(v) if v else "0" for v in vals])
-            st.plotly_chart(style(fig, 380), width='stretch')
+        fig = go.Figure()
+        for i in INDICADORES:
+            d = f[f["indicador"] == i].sort_values("anio")
+            fig.add_bar(x=d["anio"], y=d["valor"], name=i, marker_color=IND_COLOR[i],
+                        hovertemplate="%{x}<br>" + i + ": %{y:,.0f}<extra></extra>")
+        fig.update_layout(barmode="stack")
+        top = f.groupby("anio")["valor"].sum().max()
+        step = 25e6 if top > 5e7 else 10e6 if top > 2e7 else 5e6
+        vals = [i * step for i in range(int(top // step) + 2)]
+        fig.update_yaxes(tickvals=vals, ticktext=[auto(v) if v else "0" for v in vals])
+        fig.update_xaxes(type="category")
+        st.plotly_chart(style(fig, 380), width='stretch')
 
     with right:
-        # Las tarjetas de ROI medio ignoran el filtro de año (igual que CALCULATE en el DAX original)
-        base = ind[(ind["indicador"] == "ROI")]
-        if bibs:
-            base = base[base["biblioteca"].isin(bibs)]
         cards = ""
         for y in ("2023", "2024"):
-            v = base[base["anio"] == y]["valor"].mean()
-            blank = pd.isna(v)
-            cards += kpi(f"ROI medio {y}", "Sin datos" if blank else es(v), YEAR_COLOR[y], blank)
+            v = roi.loc[roi["anio"] == y, "valor"]
+            blank = v.empty
+            cards += kpi(f"ROI {y}", "Sin datos" if blank else es(float(v.iloc[0])), YEAR_COLOR[y], blank)
         st.markdown(f'<div class="kpis">{cards}</div>', unsafe_allow_html=True)
         st.write("")
         st.subheader("Indicadores por año")
-        tabla = f[["anio", "indicador"]].drop_duplicates().sort_values(["anio", "indicador"])
-        tabla.columns = ["Año", "Indicador"]
-        st.dataframe(tabla, hide_index=True, width='stretch', height=260)
+        tabla = f.sort_values(["anio", "indicador"])[["anio", "indicador", "valor", "unidad"]].copy()
+        tabla["valor"] = [es(v, 0 if float(v).is_integer() else 2) for v in tabla["valor"]]
+        tabla.columns = ["Año", "Indicador", "Valor", "Unidad"]
+        st.dataframe(tabla, hide_index=True, width='stretch', height=400)
 
 # =====================================================================
-# Página 2: Servicios per cápita
+# Página 2: Servicios per cápita de la biblioteca seleccionada
 # =====================================================================
 with tab_svc:
-    sel = svc if not servicios else svc[svc["servicio"].isin(servicios)]
+    st.markdown(f"### Biblioteca {bib}")
+    mine = svc[svc["biblioteca"] == bib]
+    sel = mine if not servicios else mine[mine["servicio"].isin(servicios)]
     uno = servicios[0] if len(servicios) == 1 else None
     left, right = st.columns([1.55, 1], gap="large")
 
@@ -233,22 +219,26 @@ with tab_svc:
         cards += kpi("Ahorro por persona, 2024", "Sin datos" if pd.isna(ahorro) else es(ahorro), RED, pd.isna(ahorro))
         st.markdown(f'<div class="kpis">{cards}</div>', unsafe_allow_html=True)
 
-        st.subheader("Ahorro del servicio por persona en bibliotecas EFQM")
-        agg = sel.groupby("biblioteca")[["v2023", "v2024"]].sum(min_count=1).reindex(BIBS)
-        agg = agg.sort_values("v2023", ascending=False, na_position="last")
-        fig = go.Figure()
-        for col, y in (("v2023", "2023"), ("v2024", "2024")):
-            fig.add_bar(x=agg.index, y=agg[col], name=y, marker_color=YEAR_COLOR[y],
-                        text=[es(v, 1 if v >= 100 else 2) if pd.notna(v) else "" for v in agg[col]],
-                        textposition="outside", hovertemplate="%{x} · " + y + ": %{y:,.2f}<extra></extra>")
-            m = agg[col].mean()
-            if pd.notna(m):
-                fig.add_hline(y=m, line_dash="dash", line_color=YEAR_COLOR[y],
-                              annotation_text=f"Media {y}: {es(m, 1)}", annotation_position="top right",
-                              annotation_font_color=YEAR_COLOR[y])
-        fig.update_layout(barmode="group")
-        fig.update_yaxes(rangemode="tozero")
-        st.plotly_chart(style(fig, 380), width='stretch')
+        st.subheader("Ahorro por persona usuaria, por servicio")
+        d = sel.dropna(subset=["v2023", "v2024"], how="all").copy()
+        d["corto"] = d["servicio"].str.replace(" (por persona usuaria)", "", regex=False)
+        d = d.iloc[::-1]
+        if d.empty:
+            st.info("Esta biblioteca no tiene datos para el servicio elegido.")
+        else:
+            fig = go.Figure()
+            for col, y in (("v2023", "2023"), ("v2024", "2024")):
+                fig.add_bar(y=d["corto"], x=d[col], name=y, orientation="h", marker_color=YEAR_COLOR[y],
+                            text=[es(v, 1 if v >= 100 else 2) if pd.notna(v) else "" for v in d[col]],
+                            textposition="outside", cliponaxis=False,
+                            hovertemplate="%{y} · " + y + ": %{x:,.2f}<extra></extra>")
+            fig.update_layout(barmode="group", legend_traceorder="reversed")
+            fig.update_xaxes(rangemode="tozero")
+            fig.update_yaxes(showgrid=False, automargin=True)
+            st.plotly_chart(style(fig, max(260, 62 * len(d) + 80)), width='stretch')
+            vacios = len(sel) - len(d)
+            if vacios:
+                st.caption(f"{vacios} servicio(s) sin dato para esta biblioteca.")
 
     with right:
         st.subheader("Fórmula del servicio")
