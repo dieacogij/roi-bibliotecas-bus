@@ -1,0 +1,85 @@
+servicio,biblioteca,v2023,v2024
+S.0.1. Libros prestados (por persona usuaria),UAH,57.685403,37.653096
+S.0.1. Libros prestados (por persona usuaria),UGR,163.690727,181.537517
+S.0.1. Libros prestados (por persona usuaria),BUS,233.784455,182.007313
+S.0.1. Libros prestados (por persona usuaria),UB,130.804484,151.239186
+S.0.1. Libros prestados (por persona usuaria),UV,179.842525,173.112013
+S.0.1. Libros prestados (por persona usuaria),UZ,100.135499,103.087538
+S.0.2. PI monografías (por persona usuaria),UAH,0.800748,0.776392
+S.0.2. PI monografías (por persona usuaria),UGR,1.408295,1.56046
+S.0.2. PI monografías (por persona usuaria),BUS,0.908004,0.930656
+S.0.2. PI monografías (por persona usuaria),UB,5.268698,6.11258
+S.0.2. PI monografías (por persona usuaria),UV,0.684421,0.500054
+S.0.2. PI monografías (por persona usuaria),UZ,0.497807,0.449606
+S.0.3. PI artículos (por persona usuaria),UAH,4.197152,5.320716
+S.0.3. PI artículos (por persona usuaria),UGR,1.704611,1.631123
+S.0.3. PI artículos (por persona usuaria),BUS,1.894496,2.048657
+S.0.3. PI artículos (por persona usuaria),UB,0.574176,1.531908
+S.0.3. PI artículos (por persona usuaria),UV,1.735547,1.536431
+S.0.3. PI artículos (por persona usuaria),UZ,4.184216,4.847536
+S.0.4. Descargas de libros electrónicos (por persona usuaria),UAH,5.335351,3.607847
+S.0.4. Descargas de libros electrónicos (por persona usuaria),UGR,17.816448,15.729708
+S.0.4. Descargas de libros electrónicos (por persona usuaria),BUS,7.744087,7.650136
+S.0.4. Descargas de libros electrónicos (por persona usuaria),UB,5.154211,7.933226
+S.0.4. Descargas de libros electrónicos (por persona usuaria),UV,2.686197,2.805216
+S.0.4. Descargas de libros electrónicos (por persona usuaria),UZ,1.937036,2.395586
+S.0.5. Descargas de artículos en línea (por persona usuaria),UAH,20.719625,24.161201
+S.0.5. Descargas de artículos en línea (por persona usuaria),UGR,62.435845,64.396895
+S.0.5. Descargas de artículos en línea (por persona usuaria),BUS,36.514581,34.570639
+S.0.5. Descargas de artículos en línea (por persona usuaria),UB,35.412666,36.68456
+S.0.5. Descargas de artículos en línea (por persona usuaria),UV,75.661805,61.300057
+S.0.5. Descargas de artículos en línea (por persona usuaria),UZ,45.888833,43.183004
+S.0.6. Descargas de repositorios (por persona usuaria),UAH,121.642555,110.350723
+S.0.6. Descargas de repositorios (por persona usuaria),UGR,280.535321,279.112185
+S.0.6. Descargas de repositorios (por persona usuaria),BUS,597.605559,364.32619
+S.0.6. Descargas de repositorios (por persona usuaria),UB,194.904374,303.429678
+S.0.6. Descargas de repositorios (por persona usuaria),UV,132.216741,8.709247
+S.0.6. Descargas de repositorios (por persona usuaria),UZ,372.427978,859.629015
+S.0.7. Servicios de referencia (por persona usuaria),UAH,0.366473,0.566389
+S.0.7. Servicios de referencia (por persona usuaria),UGR,,
+S.0.7. Servicios de referencia (por persona usuaria),BUS,0.601216,1.070001
+S.0.7. Servicios de referencia (por persona usuaria),UB,0.539136,0.707948
+S.0.7. Servicios de referencia (por persona usuaria),UV,1.001057,0.162819
+S.0.7. Servicios de referencia (por persona usuaria),UZ,,
+S.0.8. Consultas apoyo docencia e investigación (por persona usuaria),UAH,0.162972,0.333073
+S.0.8. Consultas apoyo docencia e investigación (por persona usuaria),UGR,0.179367,0.191469
+S.0.8. Consultas apoyo docencia e investigación (por persona usuaria),BUS,0.024638,0.018746
+S.0.8. Consultas apoyo docencia e investigación (por persona usuaria),UB,0.007756,0.058183
+S.0.8. Consultas apoyo docencia e investigación (por persona usuaria),UV,0.078742,0.031751
+S.0.8. Consultas apoyo docencia e investigación (por persona usuaria),UZ,0.027032,0.064722
+S.0.9. Informes de calidad en publicaciones (por persona usuaria),UAH,,
+S.0.9. Informes de calidad en publicaciones (por persona usuaria),UGR,,
+S.0.9. Informes de calidad en publicaciones (por persona usuaria),BUS,,
+S.0.9. Informes de calidad en publicaciones (por persona usuaria),UB,,
+S.0.9. Informes de calidad en publicaciones (por persona usuaria),UV,13.162799,1.22106
+S.0.9. Informes de calidad en publicaciones (por persona usuaria),UZ,,
+S.10. Formación de usuarios (por persona usuaria),UAH,0.715875,0.700984
+S.10. Formación de usuarios (por persona usuaria),UGR,3.254361,3.316945
+S.10. Formación de usuarios (por persona usuaria),BUS,1.666275,1.703607
+S.10. Formación de usuarios (por persona usuaria),UB,0.784113,0.730353
+S.10. Formación de usuarios (por persona usuaria),UV,0.495479,0.287844
+S.10. Formación de usuarios (por persona usuaria),UZ,2.705233,4.829071
+S.11. Formación de bibliotecarios (por persona usuaria),UAH,1.15932,2.12402
+S.11. Formación de bibliotecarios (por persona usuaria),UGR,3.769366,9.092647
+S.11. Formación de bibliotecarios (por persona usuaria),BUS,7.186306,7.249257
+S.11. Formación de bibliotecarios (por persona usuaria),UB,4.367145,5.137049
+S.11. Formación de bibliotecarios (por persona usuaria),UV,7.654322,2.732719
+S.11. Formación de bibliotecarios (por persona usuaria),UZ,6.571863,6.128468
+S.12. Uso de salas de estudio o reunión (por persona usuaria),UAH,26.046699,27.284979
+S.12. Uso de salas de estudio o reunión (por persona usuaria),UGR,7.099495,7.083389
+S.12. Uso de salas de estudio o reunión (por persona usuaria),BUS,22.397514,28.583265
+S.12. Uso de salas de estudio o reunión (por persona usuaria),UB,10.65635,27.431719
+S.12. Uso de salas de estudio o reunión (por persona usuaria),UV,9.663757,7.803327
+S.12. Uso de salas de estudio o reunión (por persona usuaria),UZ,,
+S.13. Uso de ordenadores (por persona usuaria),UAH,1.709811,2.262761
+S.13. Uso de ordenadores (por persona usuaria),UGR,0.108478,0.093562
+S.13. Uso de ordenadores (por persona usuaria),BUS,15.884549,24.82655
+S.13. Uso de ordenadores (por persona usuaria),UB,0.243723,0.412648
+S.13. Uso de ordenadores (por persona usuaria),UV,4.660637,3.833042
+S.13. Uso de ordenadores (por persona usuaria),UZ,7.928669,10.062269
+S.14. Visitas guiadas (por persona usuaria),UAH,0.134235,0.043394
+S.14. Visitas guiadas (por persona usuaria),UGR,0.013005,0.014258
+S.14. Visitas guiadas (por persona usuaria),BUS,0.188585,0.177116
+S.14. Visitas guiadas (por persona usuaria),UB,0.170555,0.194095
+S.14. Visitas guiadas (por persona usuaria),UV,0.113026,0.383866
+S.14. Visitas guiadas (por persona usuaria),UZ,0.18655,0.227591
